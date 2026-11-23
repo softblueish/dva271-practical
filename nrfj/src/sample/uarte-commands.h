@@ -32,5 +32,5 @@ void read_string(char* output, int max_length);
 
 void print_string_GPIO(char* message);
 
-void uart_bb_tx(unsigned long pin, uint8_t data, float baudrate);
+void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate);
 #endif
