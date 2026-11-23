@@ -32,6 +32,9 @@ LED 4       P0.31
 
 int main(){
     init_uarte();
-    print_string_GPIO("Hello World! Type something and press enter to see it echoed back.\r\n");
+    nrf_gpio_cfg_output(36); // PIN_TXD_RPI (P1.04)
+    nrf_gpio_pin_set(36);    // UART idle state is HIGH
+    nrfx_systick_delay_ms(10); // Brief pause so the line settles high
+    print_string_GPIO("Hello World!\r\n");
     return 0;
 }
