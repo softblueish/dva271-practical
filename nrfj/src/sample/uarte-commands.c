@@ -124,7 +124,7 @@ void read_string(char* output, int max_length){
 
 void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
 {
-    unsigned long bit_time_us = 1000000UL / baudrate; // 104 us at 9600 baud (with 64 MHz clock)
+    unsigned long bit_time_us = 1000000UL / baudrate;
 
     __disable_irq();
 
@@ -151,6 +151,6 @@ void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
 
 void print_string_GPIO(char* message){
     for(int i = 0; message[i] != '\0'; i++){
-        uart_bb_tx(PIN_TXD_RPI, (uint8_t)message[i], 9600);
+        uart_bb_tx(PIN_TXD_RPI, (uint8_t)message[i], 115200);
     }
 }
