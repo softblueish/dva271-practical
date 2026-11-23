@@ -122,11 +122,11 @@ void read_string(char* output, int max_length){
 }
 
 
-void uart_bb_tx(unsigned long pin, uint8_t data, uint32_t baudrate)
+void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
 {
     // If CPU is running at 128 MHz while SystemCoreClock = 64 MHz, 
     // multiply by 2 (or set NRF_CLOCK->HFCLKCTRL = 0 in main).
-    uint32_t bit_time_us = (1000000UL / baudrate); 
+    unsigned long bit_time_us = (1000000UL / baudrate); 
 
     __disable_irq(); // Prevent interrupts from stretching bit times
 
