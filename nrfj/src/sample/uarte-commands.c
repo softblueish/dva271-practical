@@ -65,7 +65,7 @@ nrfx_uarte_t init_uarte() {
 		{
 		}
 	}
-	if (errr != 0) {/*error handling if required*/ }
+	if (errr != 0) {/*error handling if required*/}
     saved_instance = instance;
     return instance;
 }
@@ -138,4 +138,12 @@ void uart_bb_tx(unsigned long pin, uint8_t data, float baudrate)
     // Stop bit
     nrf_gpio_pin_write(pin, 1);
     nrfx_systick_delay_us(bit_time_us);
+}
+
+void print_string_GPIO(char* message){
+    char input[256] = "";
+    strcat(input, message);
+    for(int i = 0; input[i] != '\0'; i++){
+        uart_bb_tx(PIN_TXD, input[i], 115200.0f);
+    }
 }
