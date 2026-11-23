@@ -2,8 +2,8 @@
 
 #define PIN_TXD 20
 #define PIN_RXD 22
-#define PIN_TXD_RPI 
-#define PIN_RXD_RPI 
+#define PIN_TXD_RPI 36
+#define PIN_RXD_RPI 37
 #define CLEAR_SCREEN "\033c"
 
 nrfx_uarte_t saved_instance;
