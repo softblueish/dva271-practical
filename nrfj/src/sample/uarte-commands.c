@@ -4,7 +4,7 @@
 #define PIN_RXD 22
 #define CLEAR_SCREEN "\033c"
 
-nrfx_uarte_t instance;
+nrfx_uarte_t saved_instance;
 volatile bool tx_done;				//volatile tx_done flag and rx_ready signal flag to set up interrupts
 volatile bool rx_ready;
 volatile uint8_t rx_buffer;
@@ -47,9 +47,6 @@ void uarte_handler(nrfx_uarte_event_t const* p_event, void* p_context)
 		break;
 	}
 }
-
-
-nrfx_uarte_t saved_instance;
 
 nrfx_uarte_t get_uarte(){
     return saved_instance;
