@@ -150,9 +150,9 @@ void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
         dwt_delay_until_cycle(next_cycle);
     }
 
-    // Stop bit (HIGH)
+    // Stop bit (HIGH) — hold for 1.5 bit periods to prevent framing overlap
     nrf_gpio_pin_set(pin);
-    next_cycle += cycles_per_bit;
+    next_cycle += cycles_per_bit + (cycles_per_bit / 2);
     dwt_delay_until_cycle(next_cycle);
 
     __enable_irq();
