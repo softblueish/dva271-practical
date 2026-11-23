@@ -12,7 +12,6 @@ volatile unsigned long uart_error_count;
 
 void uarte_handler(nrfx_uarte_event_t const* p_event, void* p_context)
 {
-	LED_on(1);
 	(void)p_context;
 
 	static unsigned long count = 0;
