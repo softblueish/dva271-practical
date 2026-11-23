@@ -122,25 +122,30 @@ void read_string(char* output, int max_length){
 }
 
 
-void uart_bb_tx(unsigned long pin, uint8_t data, float baudrate)
+void uart_bb_tx(unsigned long pin, uint8_t data, uint32_t baudrate)
 {
-    float bit_time_us = 1000000.0f / baudrate;
+    // If CPU is running at 128 MHz while SystemCoreClock = 64 MHz, 
+    // multiply by 2 (or set NRF_CLOCK->HFCLKCTRL = 0 in main).
+    uint32_t bit_time_us = (1000000UL / baudrate); 
+
+    __disable_irq(); // Prevent interrupts from stretching bit times
 
     // Start bit
     nrf_gpio_pin_write(pin, 0);
     nrfx_systick_delay_us(bit_time_us);
 
-    // Data bits
-    for(uint8_t i = 0; i < 8; i++)
+    // Data bits (LSB first)
+    for (uint8_t i = 0; i < 8; i++)
     {
         nrf_gpio_pin_write(pin, (data >> i) & 0x01);
-
         nrfx_systick_delay_us(bit_time_us);
     }
 
     // Stop bit
     nrf_gpio_pin_write(pin, 1);
     nrfx_systick_delay_us(bit_time_us);
+
+    __enable_irq();
 }
 
 void print_string_GPIO(char* message){
