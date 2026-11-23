@@ -29,4 +29,6 @@ void clear_screen();
 void print_int(int input);
 
 void read_string(char* output, int max_length);
+
+void uart_bb_tx(unsigned long pin, uint8_t data, float baudrate);
 #endif
