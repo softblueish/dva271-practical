@@ -57,11 +57,6 @@ nrfx_uarte_t init_uarte() {
 	//Default Settings and give the RX/TX pins:
 	const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(PIN_TXD, PIN_RXD);
 	nrfx_systick_init();
-	init_LED();
-	LED_off(1); 
-	LED_off(2);
-	LED_off(3);
-	LED_off(4);
 
 	//Initiate UARTE:
 	nrfx_err_t errr = nrfx_uarte_init(&instance, &config, uarte_handler);
