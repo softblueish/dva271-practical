@@ -23,4 +23,6 @@ void print_newline();
 void clear_screen();
 
 void print_int(int input);
+
+void read_string(char* output, int max_length);
 #endif
