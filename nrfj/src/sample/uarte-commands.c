@@ -55,12 +55,26 @@ nrfx_uarte_t get_uarte(){
     return saved_instance;
 }
 
-nrfx_uarte_t init_uarte(){
-    nrfx_uarte_t instance = NRFX_UARTE_INSTANCE(0);
-    const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(PIN_TXD, PIN_RXD);
-    nrfx_uarte_init(&instance, &config, NULL);
-    saved_instance = instance;
-    return instance;
+nrfx_uarte_t init_uarte(void) {
+	//Default Settings and give the RX/TX pins:
+	const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(20, 22);
+	nrfx_systick_init();
+	init_LED();
+	LED_off(1); 
+	LED_off(2);
+	LED_off(3);
+	LED_off(4);
+
+	//Initiate UARTE:
+	nrfx_err_t errr = nrfx_uarte_init(&instance, &config, uarte_handler);
+	if (errr != NRFX_SUCCESS)
+	{
+		while (1)
+		{
+		}
+	}
+	if (errr != 0) {/*error handling if required*/ }
+
 }
 
 //-------------------------------------------------------------------------------------------
@@ -111,9 +125,24 @@ void read_string(char* output, int max_length){
     }
 }
 
-void uart_bb_tx(unsigned long pin, uint8_t data, float baudrate){
-    float bit_rate = 1000000.0f / baudrate;
 
-    nrf_gpio_pin_write(pin, 0); //Start Bit
+void uart_bb_tx(unsigned long pin, uint8_t data, float baudrate)
+{
+    float bit_time_us = 1000000.0f / baudrate;
 
+    // Start bit
+    nrf_gpio_pin_write(pin, 0);
+    nrfx_systick_delay_us(bit_time_us);
+
+    // Data bits
+    for(uint8_t i = 0; i < 8; i++)
+    {
+        nrf_gpio_pin_write(pin, (data >> i) & 0x01);
+
+        nrfx_systick_delay_us(bit_time_us);
+    }
+
+    // Stop bit
+    nrf_gpio_pin_write(pin, 1);
+    nrfx_systick_delay_us(bit_time_us);
 }
