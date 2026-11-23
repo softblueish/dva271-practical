@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+void uarte_handler(nrfx_uarte_event_t const* p_event, void* p_context);
 
 nrfx_uarte_t get_uarte();
 
