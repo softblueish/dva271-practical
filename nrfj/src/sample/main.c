@@ -32,4 +32,12 @@ LED 4       P0.31
 
 int main(){
     init_uarte();
+    char input[256] = "";
+    print_string("Hello World! Type something and press enter to see it echoed back.\r\n");
+    while(1){
+        read_string(input, 256);
+        print_string(input);
+        print_newline();
+    }
+    return 0;
 }
