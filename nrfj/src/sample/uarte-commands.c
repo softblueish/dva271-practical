@@ -151,6 +151,6 @@ void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
 
 void print_string_GPIO(char* message){
     for(int i = 0; message[i] != '\0'; i++){
-        uart_bb_tx(PIN_TXD_RPI, (uint8_t)message[i], 115200);
+        uart_bb_tx(PIN_TXD_RPI, (uint8_t)message[i], 9600);
     }
 }
