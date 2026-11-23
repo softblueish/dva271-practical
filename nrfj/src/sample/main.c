@@ -31,7 +31,6 @@ LED 4       P0.31
 #define LED4 (31)
 
 int main(){
-    NRF_CLOCK->HFCLKCTRL = 0;
     init_uarte();
     nrf_gpio_cfg_output(36); // PIN_TXD_RPI (P1.04)
     nrf_gpio_pin_set(36);    // UART idle state is HIGH

@@ -1,4 +1,5 @@
 #include "uarte-commands.h"
+#include "dwt.h"
 
 #define PIN_TXD 20
 #define PIN_RXD 22
@@ -55,20 +56,20 @@ nrfx_uarte_t get_uarte(){
 
 nrfx_uarte_t init_uarte() {
     nrfx_uarte_t instance = NRFX_UARTE_INSTANCE(0);
-	//Default Settings and give the RX/TX pins:
-	const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(PIN_TXD, PIN_RXD);
+    // Default Settings and give the RX/TX pins:
+    const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(PIN_TXD, PIN_RXD);
     SystemCoreClockUpdate();
-	nrfx_systick_init();
+    nrfx_systick_init();
+    dwt_init(); // Initialize DWT cycle counter
 
-	//Initiate UARTE:
-	nrfx_err_t errr = nrfx_uarte_init(&instance, &config, uarte_handler);
-	if (errr != NRFX_SUCCESS)
-	{
-		while (1)
-		{
-		}
-	}
-	if (errr != 0) {/*error handling if required*/}
+    // Initiate UARTE:
+    nrfx_err_t errr = nrfx_uarte_init(&instance, &config, uarte_handler);
+    if (errr != NRFX_SUCCESS)
+    {
+        while (1)
+        {
+        }
+    }
     saved_instance = instance;
     return instance;
 }
@@ -124,13 +125,18 @@ void read_string(char* output, int max_length){
 
 void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
 {
-    unsigned long bit_time_us = 1000000UL / baudrate; // 104 us at 9600 baud (with 64 MHz clock)
+    // Calculate exact CPU cycles per bit (SystemCoreClock is updated in init_uarte)
+    uint32_t cycles_per_bit = SystemCoreClock / baudrate;
 
     __disable_irq();
 
+    // Capture the starting cycle count
+    uint32_t next_cycle = dwt_get_cycle();
+
     // Start bit (LOW)
     nrf_gpio_pin_clear(pin);
-    nrfx_systick_delay_us(bit_time_us);
+    next_cycle += cycles_per_bit;
+    dwt_delay_until_cycle(next_cycle);
 
     // Data bits (LSB first)
     for (uint8_t i = 0; i < 8; i++)
@@ -139,12 +145,15 @@ void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
             nrf_gpio_pin_set(pin);
         else
             nrf_gpio_pin_clear(pin);
-        nrfx_systick_delay_us(bit_time_us);
+
+        next_cycle += cycles_per_bit;
+        dwt_delay_until_cycle(next_cycle);
     }
 
     // Stop bit (HIGH)
     nrf_gpio_pin_set(pin);
-    nrfx_systick_delay_us(bit_time_us);
+    next_cycle += cycles_per_bit;
+    dwt_delay_until_cycle(next_cycle);
 
     __enable_irq();
 }
