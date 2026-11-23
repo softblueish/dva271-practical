@@ -55,9 +55,10 @@ nrfx_uarte_t get_uarte(){
     return saved_instance;
 }
 
-nrfx_uarte_t init_uarte(void) {
+nrfx_uarte_t init_uarte() {
+    nrfx_uarte_t instance = NRFX_UARTE_INSTANCE(0);
 	//Default Settings and give the RX/TX pins:
-	const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(20, 22);
+	const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(PIN_TXD, PIN_RXD);
 	nrfx_systick_init();
 	init_LED();
 	LED_off(1); 
@@ -74,7 +75,8 @@ nrfx_uarte_t init_uarte(void) {
 		}
 	}
 	if (errr != 0) {/*error handling if required*/ }
-
+    saved_instance = instance;
+    return instance;
 }
 
 //-------------------------------------------------------------------------------------------

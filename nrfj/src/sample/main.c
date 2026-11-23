@@ -25,6 +25,11 @@ LED 4       P0.31
 #define BUTTON3 (8)
 #define BUTTON4 (9)
 
+#define LED1 (28)
+#define LED2 (29)
+#define LED3 (30)
+#define LED4 (31)
+
 int main(){
-    // Meow
+    init_uarte();
 }
