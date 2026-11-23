@@ -4,8 +4,11 @@
 #include <nrf5340_application.h>
 #include <nrfx_config.h>
 #include <nrf.h>
-#include <nrf_gpio.h>
 #include <nrfx_uarte.h>
+#include <nrf_gpio.h>
+#include <nrfx_systick.h>
+#include <nrfx_rtc.h>
+#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 

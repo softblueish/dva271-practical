@@ -1,14 +1,3 @@
-#include <nrfx.h>
-#include <nrf5340_application.h>
-#include <nrfx_config.h>
-#include <nrf.h>
-#include <nrf_gpio.h>
-#include <nrfx_systick.h>
-#include <nrfx_uarte.h>
-#include <nrfx_rtc.h>
-#include <nrf_gpiote.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "uarte-commands.h"
 
 // Serial communication 115200 baud

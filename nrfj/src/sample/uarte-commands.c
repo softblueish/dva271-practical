@@ -4,8 +4,52 @@
 #define PIN_RXD 22
 #define CLEAR_SCREEN "\033c"
 
-nrfx_uarte_t saved_instance;
+nrfx_uarte_t instance;
+volatile bool tx_done;				//volatile tx_done flag and rx_ready signal flag to set up interrupts
+volatile bool rx_ready;
+volatile uint8_t rx_buffer;
+volatile unsigned long uart_error_count;
 
+void uarte_handler(nrfx_uarte_event_t const* p_event, void* p_context)
+{
+	LED_on(1);
+	(void)p_context;
+
+	static unsigned long count = 0;
+
+	switch (p_event->type)
+	{
+	case NRFX_UARTE_EVT_TX_DONE:
+
+		/*The UARTE peripheral has completely finished using
+		the transmission buffer. main() may start another TX.*/
+
+		tx_done = true;
+		break;
+		
+
+	case NRFX_UARTE_EVT_RX_DONE:
+		/*Save the received byte for main().
+		Do not immediately restart reception here if main()
+		needs to consume rx_buffer first.*/
+		rx_ready = true;
+		break;
+
+	case NRFX_UARTE_EVT_ERROR:
+		uart_error_count++;
+
+		/*Allow main() to observe that no transmission is active.
+		 The program can then decide whether to retry or stop.*/
+		tx_done = true;
+		break;
+
+	default:
+		break;
+	}
+}
+
+
+nrfx_uarte_t saved_instance;
 
 nrfx_uarte_t get_uarte(){
     return saved_instance;
@@ -18,6 +62,8 @@ nrfx_uarte_t init_uarte(){
     saved_instance = instance;
     return instance;
 }
+
+//-------------------------------------------------------------------------------------------
 
 void print_string(char* message){
     char input[256] = "";
@@ -63,4 +109,11 @@ void read_string(char* output, int max_length){
             break;
         }
     }
+}
+
+void uart_bb_tx(unsigned long pin, uint8_t data, float baudrate){
+    float bit_rate = 1000000.0f / baudrate;
+
+    nrf_gpio_pin_write(pin, 0); //Start Bit
+
 }
