@@ -57,6 +57,7 @@ nrfx_uarte_t init_uarte() {
     nrfx_uarte_t instance = NRFX_UARTE_INSTANCE(0);
 	//Default Settings and give the RX/TX pins:
 	const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(PIN_TXD, PIN_RXD);
+    SystemCoreClockUpdate();
 	nrfx_systick_init();
 
 	//Initiate UARTE:
