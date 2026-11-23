@@ -146,6 +146,6 @@ void print_string_GPIO(char* message){
     char input[256] = "";
     strcat(input, message);
     for(int i = 0; input[i] != '\0'; i++){
-        uart_bb_tx(PIN_TXD_RPI, input[i], 115200.0f);
+        uart_bb_tx(PIN_TXD_RPI, input[i], 9600.0f);
     }
 }
