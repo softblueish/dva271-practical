@@ -138,7 +138,7 @@ void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
 		buffer = buffer << i;
 		nrfx_systick_delay_us(bit_time_us);
 	}
-	data* = buffer;
+	*data = buffer;
 	nrfx_systick_delay_us(bit_time_us);
 	__enable_irq();
 }
