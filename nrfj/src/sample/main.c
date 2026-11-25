@@ -44,12 +44,12 @@ int main(){
 	init_uarte();
 	nrf_gpio_cfg_output(36);
 	nrf_gpio_pin_set(36);
-	// nrf_gpio_cfg_input(37, NRF_GPIO_PIN_PULLUP);
+	nrf_gpio_cfg_input(37, NRF_GPIO_PIN_PULLUP);
 	nrfx_systick_delay_ms(10);
 	while (1) {
 		char *message;
 		print_string_GPIO("Waiting for keyboard input...\r\n");
-		*message = read_char();
+		uart_bb_rx(37, &message, 9600);
 		print_string_GPIO("We got an input!\r\n");
 		print_string_GPIO("\nByte recieved: ");
 		for (uint8_t i = 0; i < 8; i++)

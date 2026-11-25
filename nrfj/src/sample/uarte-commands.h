@@ -28,7 +28,7 @@ void clear_screen();
 
 void print_int(int input);
 
-char read_char(void);
+//char read_char(void);
 
 void read_string(char* output, int max_length);
 
@@ -36,5 +36,5 @@ void print_string_GPIO(char* message);
 
 void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate);
 
-//void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate);
+void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate);
 #endif

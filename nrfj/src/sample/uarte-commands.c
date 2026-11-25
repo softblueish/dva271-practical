@@ -39,7 +39,7 @@ nrfx_uarte_t get_uarte(){
 
 nrfx_uarte_t init_uarte() {
 	nrfx_uarte_t instance = NRFX_UARTE_INSTANCE(0);
-	const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(PIN_TXD, PIN_RXD_RPI);
+	const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(PIN_TXD, PIN_RXD);
 	SystemCoreClockUpdate();
 	nrfx_systick_init();
 	nrfx_err_t errr = nrfx_uarte_init(&instance, &config, uarte_handler);
@@ -134,7 +134,7 @@ void print_string_GPIO(char* message){
     }
 }
 
-/*void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
+void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
 {
 	unsigned long bit_time_us = 1000000UL / baudrate;
 	__disable_irq();
@@ -156,10 +156,10 @@ void print_string_GPIO(char* message){
 	*data = buffer;
 	nrfx_systick_delay_us(bit_time_us);
 	__enable_irq();
-}*/
+}
 
-char read_char(void) {
+/*char read_char(void) {
 	uint8_t c;
 	while (nrfx_uarte_rx(&saved_instance, &c, 1) != NRFX_SUCCESS);
 	return (char)c;
-}
+}*/
