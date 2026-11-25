@@ -35,9 +35,12 @@ int main(){
 	init_uarte();
 	nrf_gpio_cfg_output(36); // PIN_TXD_RPI (P1.04)
 	nrf_gpio_pin_set(36);    // UART idle state is HIGH
+	nrf_gpio_cfg_input(37); // PIN_TXD_RPI (P1.04)
 	nrfx_systick_delay_ms(10); // Brief pause so the line settles high
 	while (1) {
-		print_string_GPIO("Hello World!\r\n");
+		uint32_t message = 0;
+		uart_bb_rx(37, &message, 9600);
+		uart_bb_tx(36, message, 9600);
 		nrfx_systick_delay_ms(1000);
 	}
 	return 0;
