@@ -105,9 +105,9 @@ void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
 {
 	unsigned long bit_time_us = 1000000UL / baudrate;
 	__disable_irq();
-	nrf_gpio_pin_clear(pin); // Announce transmission
+	nrf_gpio_pin_clear(pin);
 	nrfx_systick_delay_us(bit_time_us);
-	for (uint8_t i = 0; i < 8; i++) // Transmit byte
+	for (uint8_t i = 0; i < 8; i++)
 	{
 		if ((data >> i) & 0x01)
 			nrf_gpio_pin_set(pin);
@@ -115,7 +115,7 @@ void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
 			nrf_gpio_pin_clear(pin);
 		nrfx_systick_delay_us(bit_time_us);
 	}
-	nrf_gpio_pin_set(pin); // Announce end of transmission
+	nrf_gpio_pin_set(pin);
 	nrfx_systick_delay_us(bit_time_us);
 	__enable_irq();
 }
@@ -124,16 +124,16 @@ void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
 {
 	unsigned long bit_time_us = 1000000UL / baudrate;
 	__disable_irq();
-	while(nrf_gpio_pin_read(pin)); // Await transmission announcement
+	while(nrf_gpio_pin_read(pin));
 	nrfx_systick_delay_us(bit_time_us); 
-	for (uint8_t i = 0; i < 8; i++) // Read byte
+	for (uint8_t i = 0; i < 8; i++)
 	{
 		*data = *data >> i;
 		*data = *data | nrfx_gpio_pin_read(pin);
 		*data = *data << i;
 		nrfx_systick_delay_us(bit_time_us);
 	}
-	nrfx_systick_delay_us(bit_time_us); // End lag to match the uart_bb_tx function (might not be necessary tbh?)
+	nrfx_systick_delay_us(bit_time_us);
 	__enable_irq();
 }
 
