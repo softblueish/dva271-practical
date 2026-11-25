@@ -49,7 +49,7 @@ int main(){
 	while (1) {
 		uint8_t *message;
 		read_char(message);
-		print_string_GPIO("\nByte recieved: ");
+		print_string_GPIO("\r\nByte recieved: ");
 		for (uint8_t i = 0; i < 8; i++)
 		{
 			if ((*message >> i) & 0x01)
@@ -57,7 +57,7 @@ int main(){
 			else
 				print_string_GPIO("0");
 		}
-		print_string_GPIO("\n");
+		print_string_GPIO("\r\n");
 		nrfx_systick_delay_ms(1000);
 	}
 	return 0;

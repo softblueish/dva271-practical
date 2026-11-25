@@ -159,7 +159,7 @@ void print_string_GPIO(char* message){
 }*/
 
 void read_char(char* output){
-	print_string_GPIO("Waiting for keyboard input...\n");
+	print_string_GPIO("Waiting for keyboard input...\r\n");
 	while(nrfx_uarte_rx(&saved_instance, output, 1) != NRFX_SUCCESS);
-	print_string_GPIO("We got an input!\n");
+	print_string_GPIO("We got an input!\r\n");
 }
