@@ -28,7 +28,7 @@ void clear_screen();
 
 void print_int(int input);
 
-void read_char(char* output);
+char read_char(void);
 
 void read_string(char* output, int max_length);
 

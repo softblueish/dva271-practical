@@ -158,8 +158,8 @@ void print_string_GPIO(char* message){
 	__enable_irq();
 }*/
 
-void read_char(char* output){
-	print_string_GPIO("Waiting for keyboard input...\r\n");
-	while(nrfx_uarte_rx(&saved_instance, output, 1) != NRFX_SUCCESS);
-	print_string_GPIO("We got an input!\r\n");
+char read_char(void) {
+	uint8_t c;
+	while (nrfx_uarte_rx(&saved_instance, &c, 1) != NRFX_SUCCESS);
+	return (char)c;
 }
