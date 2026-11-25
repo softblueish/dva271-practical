@@ -132,18 +132,17 @@ void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
 	__disable_irq();
 	while(nrf_gpio_pin_read(pin));
 	uint8_t buffer = *data;
+	nrfx_systick_delay_us(bit_time_us);
 	for (uint8_t i = 0; i < 8; i++)
 	{
 		uint8_t input = 0x00;
 		if (nrf_gpio_pin_read(pin))
 			input = 0x01;
-			print_string_GPIO("1");
 		else
-			print_string_GPIO("0");
 			input = 0x00;
-		buffer = buffer >> i;
+		buffer = (buffer >> i);
 		buffer = buffer | input;
-		buffer = buffer << i;
+		buffer = (buffer << i);
 		nrfx_systick_delay_us(bit_time_us);
 	}
 	data* = buffer;
