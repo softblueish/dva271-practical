@@ -25,10 +25,18 @@
 
 static void byte_to_binary_string(uint8_t value, char out[9])
 {
-	for (int bit = 7; bit >= 0; bit--)
+	for (uint8_t i = 0; i < 8; i++)
 	{
-		out[7 - bit] = ((value >> bit) & 0x01) ? '1' : '0';
+		if ((value >> i) & 0x01)
+		{
+			out[i] = '1';
+		}
+		else
+		{
+			out[i] = '0';
+		}
 	}
+
 	out[8] = '\0';
 }
 
