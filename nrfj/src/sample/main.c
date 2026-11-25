@@ -51,7 +51,9 @@ int main(){
 		print_string_GPIO("Waiting for keyboard input...\r\n");
 		uart_bb_rx(37, &message, 9600);
 		print_string_GPIO("We got an input!\r\n");
-		print_string_GPIO("\nByte recieved: ");
+		print_string_GPIO("\r\nChar Recieved: ");
+		print_string_GPIO(sprintf("%c", message));
+		print_string_GPIO("\r\nByte recieved: ");
 		for (uint8_t i = 0; i < 8; i++)
 		{
 			if ((*message >> i) & 0x01)
