@@ -40,16 +40,16 @@ LED 4       P0.31
 int main(){
 	// note from ashley
 	// for some reason the baud rate refuses to match unless we turn off HFCLKCTRL, which supposedly lowers the NRF clock speed
-	// NRF_CLOCK->HFCLKCTRL = 0;
+	NRF_CLOCK->HFCLKCTRL = 0;
 	init_uarte();
 	nrf_gpio_cfg_output(36);
 	nrf_gpio_pin_set(36);
-	nrf_gpio_cfg_input(37, NRF_GPIO_PIN_PULLUP);
+	// nrf_gpio_cfg_input(37, NRF_GPIO_PIN_PULLUP);
 	nrfx_systick_delay_ms(10);
 	while (1) {
 		uint8_t *message;
 		read_char(message);
-		print_string_GPIO("\r\nByte recieved: ");
+		print_string_GPIO("\nByte recieved: ");
 		for (uint8_t i = 0; i < 8; i++)
 		{
 			if ((*message >> i) & 0x01)
@@ -57,7 +57,7 @@ int main(){
 			else
 				print_string_GPIO("0");
 		}
-		print_string_GPIO("\r\n");
+		print_string_GPIO("\n");
 		nrfx_systick_delay_ms(1000);
 	}
 	return 0;
