@@ -39,7 +39,7 @@ nrfx_uarte_t get_uarte(){
 
 nrfx_uarte_t init_uarte() {
 	nrfx_uarte_t instance = NRFX_UARTE_INSTANCE(0);
-	const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(PIN_TXD, PIN_RXD);
+	const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(PIN_TXD, PIN_RXD_RPI);
 	SystemCoreClockUpdate();
 	nrfx_systick_init();
 	nrfx_err_t errr = nrfx_uarte_init(&instance, &config, uarte_handler);
