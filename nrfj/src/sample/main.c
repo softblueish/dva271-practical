@@ -35,25 +35,23 @@ LED 4       P0.31
 #define PIN_TXD_RPI 36
 #define PIN_RXD_RPI 37
 
-#define BAUD_RATE 9600
+#define BAUD_RATE 115200
 
 int main(){
 	// note from ashley
 	// for some reason the baud rate refuses to match unless we turn off HFCLKCTRL, which supposedly lowers the NRF clock speed
-	NRF_CLOCK->HFCLKCTRL = 0;
+	//NRF_CLOCK->HFCLKCTRL = 0;
 	init_uarte();
 	nrf_gpio_cfg_output(36);
 	nrf_gpio_pin_set(36);
 	nrf_gpio_cfg_input(37, NRF_GPIO_PIN_PULLUP);
 	nrfx_systick_delay_ms(10);
+	
 	while (1) {
 		char *message;
 		print_string_GPIO("Waiting for keyboard input...\r\n");
-		uart_bb_rx(37, &message, 9600);
 		print_string_GPIO("We got an input!\r\n");
 		print_string_GPIO("\r\nChar Recieved: ");
-		print_string_GPIO(sprintf("%c", message));
-		print_string_GPIO("\r\nByte recieved: ");
 		for (uint8_t i = 0; i < 8; i++)
 		{
 			if ((*message >> i) & 0x01)

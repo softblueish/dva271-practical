@@ -1,4 +1,5 @@
 #include "uarte-commands.h"
+#include "dwt.h"
 
 #define PIN_TXD 20
 #define PIN_RXD 22
@@ -42,6 +43,7 @@ nrfx_uarte_t init_uarte() {
 	const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(PIN_TXD, PIN_RXD);
 	SystemCoreClockUpdate();
 	nrfx_systick_init();
+	dwt_init();
 	nrfx_err_t errr = nrfx_uarte_init(&instance, &config, uarte_handler);
 	if (errr != NRFX_SUCCESS)
 	{
@@ -109,7 +111,7 @@ void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
 
     // Start bit (LOW)
     nrf_gpio_pin_clear(pin);
-    nrfx_systick_delay_us(bit_time_us);
+    dwt_delay_until_cycle(dwt_get_cycle()+277);
 
     // Data bits (LSB first)
     for (uint8_t i = 0; i < 8; i++)
@@ -118,23 +120,23 @@ void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
             nrf_gpio_pin_set(pin);
         else
             nrf_gpio_pin_clear(pin);
-        nrfx_systick_delay_us(bit_time_us);
+        dwt_delay_until_cycle(dwt_get_cycle()+277);
     }
 
     // Stop bit (HIGH)
     nrf_gpio_pin_set(pin);
-    nrfx_systick_delay_us(bit_time_us);
+    dwt_delay_until_cycle(dwt_get_cycle()+277);
 
     __enable_irq();
 }
 
 void print_string_GPIO(char* message){
     for(int i = 0; message[i] != '\0'; i++){
-        uart_bb_tx(PIN_TXD_RPI, (uint8_t)message[i], 9600);
+        uart_bb_tx(PIN_TXD_RPI, (uint8_t)message[i], 115200);
     }
 }
 
-void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
+/*void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
 {
 	unsigned long bit_time_us = 1000000UL / baudrate;
 	__disable_irq();
@@ -156,7 +158,7 @@ void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
 	*data = buffer;
 	nrfx_systick_delay_us(bit_time_us);
 	__enable_irq();
-}
+}*/
 
 /*char read_char(void) {
 	uint8_t c;
