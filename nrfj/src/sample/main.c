@@ -52,7 +52,7 @@ int main(){
 		print_string_GPIO("\nByte recieved: ");
 		for (uint8_t i = 0; i < 8; i++)
 		{
-			if ((data >> i) & 0b00000001)
+			if ((message >> i) & 0b00000001)
 				print_string_GPIO("1");
 			else
 				print_string_GPIO("0");
