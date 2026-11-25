@@ -90,10 +90,6 @@ void read_int(int* output){
 	*output = atoi(buffer);
 }
 
-void read_char(char* output){
-	while(nrfx_uarte_rx(&saved_instance, output, 1) != NRFX_SUCCESS);
-}
-
 void read_string(char* output, int max_length){
 	for(int i = 0; i < max_length; i++){
 		nrfx_uarte_rx(&saved_instance, &output[i], sizeof(output[i]));
@@ -153,3 +149,8 @@ void print_string_GPIO(char* message){
 	nrfx_systick_delay_us(bit_time_us);
 	__enable_irq();
 }*/
+
+void read_char(char* output){
+	print_string_GPIO("Waiting for keyboard input...\n");
+	while(nrfx_uarte_rx(&saved_instance, output, 1) != NRFX_SUCCESS);
+}
