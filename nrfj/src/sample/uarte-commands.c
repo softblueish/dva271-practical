@@ -109,7 +109,7 @@ void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
 	nrfx_systick_delay_us(bit_time_us);
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		if ((data >> i) & 0b00000001)
+		if ((data >> i) & 0x01)
 			nrf_gpio_pin_set(pin);
 		else
 			nrf_gpio_pin_clear(pin);
