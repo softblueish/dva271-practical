@@ -90,6 +90,10 @@ void read_int(int* output){
 	*output = atoi(buffer);
 }
 
+void read_char(char* output){
+	while(nrfx_uarte_rx(&saved_instance, output, 1) != NRFX_SUCCESS);
+}
+
 void read_string(char* output, int max_length){
 	for(int i = 0; i < max_length; i++){
 		nrfx_uarte_rx(&saved_instance, &output[i], sizeof(output[i]));

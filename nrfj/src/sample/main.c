@@ -48,8 +48,7 @@ int main(){
 	nrfx_systick_delay_ms(10);
 	while (1) {
 		uint8_t *message;
-		nrfx_uarte_t saved_instance = get_uarte();
-		while(nrfx_uarte_rx(&saved_instance, message, sizeof(uint8_t)) != NRFX_SUCCESS);
+		read_char(message);
 		print_string_GPIO("\nByte recieved: ");
 		for (uint8_t i = 0; i < 8; i++)
 		{

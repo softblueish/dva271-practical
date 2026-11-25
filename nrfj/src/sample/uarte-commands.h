@@ -28,6 +28,8 @@ void clear_screen();
 
 void print_int(int input);
 
+void read_char(char* output);
+
 void read_string(char* output, int max_length);
 
 void print_string_GPIO(char* message);
