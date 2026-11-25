@@ -40,7 +40,7 @@ LED 4       P0.31
 int main(){
 	// note from ashley
 	// for some reason the baud rate refuses to match unless we turn off HFCLKCTRL, which supposedly lowers the NRF clock speed
-	NRF_CLOCK->HFCLKCTRL = 0;
+	// NRF_CLOCK->HFCLKCTRL = 0;
 	init_uarte();
 	nrf_gpio_cfg_output(36);
 	nrf_gpio_pin_set(36);
