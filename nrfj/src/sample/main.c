@@ -50,6 +50,10 @@ int main(void)
 		char binary[9];
 
 		byte_to_binary_string((uint8_t)received, binary);
+		print_string_GPIO("Recieved char: ");
+		char formatted[2] = {received, '\0'};
+		print_string_GPIO(formatted);
+		print_string_GPIO("\r\nAlso known as byte: ");
 		print_string_GPIO(binary);
 		print_string_GPIO("\r\n");
 	}
