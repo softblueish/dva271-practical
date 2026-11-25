@@ -31,14 +31,14 @@ LED 4       P0.31
 #define LED4 (31)
 
 int main(){
-    NRF_CLOCK->HFCLKCTRL = 0;
-    init_uarte();
-    nrf_gpio_cfg_output(36); // PIN_TXD_RPI (P1.04)
-    nrf_gpio_pin_set(36);    // UART idle state is HIGH
-    nrfx_systick_delay_ms(10); // Brief pause so the line settles high
-    while (1) {
-        print_string_GPIO("Hello World!\r\n");
-        nrfx_systick_delay_ms(1000);
-    }
-    return 0;
+	NRF_CLOCK->HFCLKCTRL = 0;
+	init_uarte();
+	nrf_gpio_cfg_output(36); // PIN_TXD_RPI (P1.04)
+	nrf_gpio_pin_set(36);    // UART idle state is HIGH
+	nrfx_systick_delay_ms(10); // Brief pause so the line settles high
+	while (1) {
+		print_string_GPIO("Hello World!\r\n");
+		nrfx_systick_delay_ms(1000);
+	}
+	return 0;
 }
