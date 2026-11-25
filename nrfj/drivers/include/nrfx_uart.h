@@ -140,7 +140,7 @@ typedef struct
     .pselcts            = NRF_UART_PSEL_DISCONNECTED,                             \
     .pselrts            = NRF_UART_PSEL_DISCONNECTED,                             \
     .p_context          = NULL,                                                   \
-    .baudrate           = NRF_UART_BAUDRATE_115200,                               \
+    .baudrate           = NRF_UART_BAUDRATE_9600,                               \
     .interrupt_priority = NRFX_UART_DEFAULT_CONFIG_IRQ_PRIORITY,                  \
     .hal_cfg            = {                                                       \
         .hwfc           = NRF_UART_HWFC_DISABLED,                                 \
