@@ -30,17 +30,26 @@ LED 4       P0.31
 #define LED3 (30)
 #define LED4 (31)
 
+#define PIN_TXD 20
+#define PIN_RXD 22
+#define PIN_TXD_RPI 36
+#define PIN_RXD_RPI 37
+
+#define BAUD_RATE 9600
+
 int main(){
+	// note from ashley
+	// for some reason the baud rate refuses to match unless we turn off HFCLKCTRL, which supposedly lowers the NRF clock speed
 	NRF_CLOCK->HFCLKCTRL = 0;
 	init_uarte();
-	nrf_gpio_cfg_output(36); // PIN_TXD_RPI (P1.04)
-	nrf_gpio_pin_set(36);    // UART idle state is HIGH
-	nrf_gpio_cfg_input(37); // PIN_TXD_RPI (P1.04)
-	nrfx_systick_delay_ms(10); // Brief pause so the line settles high
+	nrf_gpio_cfg_output(36);
+	nrf_gpio_pin_set(36);
+	nrf_gpio_cfg_input(37);
+	nrfx_systick_delay_ms(10);
 	while (1) {
 		uint32_t message = 0;
-		uart_bb_rx(37, &message, 9600);
-		uart_bb_tx(36, message, 9600);
+		uart_bb_rx(PIN_RXD_RPI, &message, BAUD_RATE);
+		uart_bb_tx(PIN_TXD_RPI, message, BAUD_RATE);
 		nrfx_systick_delay_ms(1000);
 	}
 	return 0;

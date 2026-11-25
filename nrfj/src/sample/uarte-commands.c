@@ -7,7 +7,7 @@
 #define CLEAR_SCREEN "\033c"
 
 nrfx_uarte_t saved_instance;
-volatile bool tx_done;				//volatile tx_done flag and rx_ready signal flag to set up interrupts
+volatile bool tx_done;
 volatile bool rx_ready;
 volatile uint8_t rx_buffer;
 volatile unsigned long uart_error_count;
@@ -21,26 +21,16 @@ void uarte_handler(nrfx_uarte_event_t const* p_event, void* p_context)
 	switch (p_event->type)
 	{
 	case NRFX_UARTE_EVT_TX_DONE:
-
-		/*The UARTE peripheral has completely finished using
-		the transmission buffer. main() may start another TX.*/
-
 		tx_done = true;
 		break;
 		
 
 	case NRFX_UARTE_EVT_RX_DONE:
-		/*Save the received byte for main().
-		Do not immediately restart reception here if main()
-		needs to consume rx_buffer first.*/
 		rx_ready = true;
 		break;
 
 	case NRFX_UARTE_EVT_ERROR:
 		uart_error_count++;
-
-		/*Allow main() to observe that no transmission is active.
-		 The program can then decide whether to retry or stop.*/
 		tx_done = true;
 		break;
 
@@ -55,12 +45,9 @@ nrfx_uarte_t get_uarte(){
 
 nrfx_uarte_t init_uarte() {
 	nrfx_uarte_t instance = NRFX_UARTE_INSTANCE(0);
-	//Default Settings and give the RX/TX pins:
 	const nrfx_uarte_config_t config = NRFX_UARTE_DEFAULT_CONFIG(PIN_TXD, PIN_RXD);
 	SystemCoreClockUpdate();
 	nrfx_systick_init();
-
-	//Initiate UARTE:
 	nrfx_err_t errr = nrfx_uarte_init(&instance, &config, uarte_handler);
 	if (errr != NRFX_SUCCESS)
 	{
@@ -68,12 +55,10 @@ nrfx_uarte_t init_uarte() {
 		{
 		}
 	}
-	if (errr != 0) {/*error handling if required*/}
+	if (errr != 0) {}
 	saved_instance = instance;
 	return instance;
 }
-
-//-------------------------------------------------------------------------------------------
 
 void print_string(char* message){
 	char input[256] = "";
@@ -125,14 +110,9 @@ void read_string(char* output, int max_length){
 void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
 {
 	unsigned long bit_time_us = 1000000UL / baudrate;
-
 	__disable_irq();
-
-	// Start bit (LOW)
 	nrf_gpio_pin_clear(pin);
 	nrfx_systick_delay_us(bit_time_us);
-
-	// Data bits (LSB first)
 	for (uint8_t i = 0; i < 8; i++)
 	{
 		if ((data >> i) & 0x01)
@@ -141,25 +121,17 @@ void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
 			nrf_gpio_pin_clear(pin);
 		nrfx_systick_delay_us(bit_time_us);
 	}
-
-	// Stop bit (HIGH)
 	nrf_gpio_pin_set(pin);
 	nrfx_systick_delay_us(bit_time_us);
-
 	__enable_irq();
 }
 
 void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
 {
 	unsigned long bit_time_us = 1000000UL / baudrate;
-
 	__disable_irq();
-
-	// Wait for the starting bit LOW
 	while(nrf_gpio_pin_read(pin));
 	nrfx_systick_delay_us(bit_time_us);
-
-	// Data bits (LSB first)
 	for (uint8_t i = 0; i < 8; i++)
 	{
 		*data = *data >> i;
@@ -168,7 +140,6 @@ void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
 		nrfx_systick_delay_us(bit_time_us);
 	}
 	nrfx_systick_delay_us(bit_time_us);
-
 	__enable_irq();
 }
 
