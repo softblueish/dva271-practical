@@ -124,7 +124,7 @@ typedef struct
     .rts_pin            = NRF_UARTE_PSEL_DISCONNECTED,                          \
     .cts_pin            = NRF_UARTE_PSEL_DISCONNECTED,                          \
     .p_context          = NULL,                                                 \
-    .baudrate           = NRF_UARTE_BAUDRATE_115200,                            \
+    .baudrate           = NRF_UARTE_BAUDRATE_9600,                            \
     .interrupt_priority = NRFX_UARTE_DEFAULT_CONFIG_IRQ_PRIORITY,               \
     .config             =                                                       \
     {                                                                           \
