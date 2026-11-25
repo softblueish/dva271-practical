@@ -26,6 +26,7 @@ SRC_FILES        += uarte-commands.c
 SRC_FILES        += $(PROJ)/drivers/src/nrfx_uarte.c
 SRC_FILES 	  += $(PROJ)/drivers/src/nrfx_systick.c
 SRC_FILES 	  += $(PROJ)/drivers/src/nrfx_rtc.c
+
 # Definera folders
 SRC_DIRS         := $(dir $(SRC_FILES))
 SRCES            := $(notdir $(SRC_FILES))

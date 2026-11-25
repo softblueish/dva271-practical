@@ -44,7 +44,7 @@ int main(){
 	init_uarte();
 	nrf_gpio_cfg_output(36);
 	nrf_gpio_pin_set(36);
-	nrf_gpio_cfg_input(37);
+	nrf_gpio_cfg_input(37, NRF_GPIO_PIN_PULLUP);
 	nrfx_systick_delay_ms(10);
 	while (1) {
 		unsigned long message = 0;
