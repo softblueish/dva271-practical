@@ -103,27 +103,35 @@ void read_string(char* output, int max_length){
 
 void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
 {
-	unsigned long bit_time_us = 1000000UL / baudrate;
-	__disable_irq();
-	nrf_gpio_pin_clear(pin);
-	nrfx_systick_delay_us(bit_time_us);
-	for (uint8_t i = 0; i < 8; i++)
-	{
-		if ((data >> i) & 0x01)
-			nrf_gpio_pin_set(pin);
-		else
-			nrf_gpio_pin_clear(pin);
-		nrfx_systick_delay_us(bit_time_us);
-	}
-	nrf_gpio_pin_set(pin);
-	nrfx_systick_delay_us(bit_time_us);
-	__enable_irq();
+    unsigned long bit_time_us = 1000000UL / baudrate;
+
+    __disable_irq();
+
+    // Start bit (LOW)
+    nrf_gpio_pin_clear(pin);
+    nrfx_systick_delay_us(bit_time_us);
+
+    // Data bits (LSB first)
+    for (uint8_t i = 0; i < 8; i++)
+    {
+        if ((data >> i) & 0x01)
+            nrf_gpio_pin_set(pin);
+        else
+            nrf_gpio_pin_clear(pin);
+        nrfx_systick_delay_us(bit_time_us);
+    }
+
+    // Stop bit (HIGH)
+    nrf_gpio_pin_set(pin);
+    nrfx_systick_delay_us(bit_time_us);
+
+    __enable_irq();
 }
 
 void print_string_GPIO(char* message){
-	for(int i = 0; message[i] != '\0'; i++){
-		uart_bb_tx(PIN_TXD_RPI, (uint8_t)message[i], 9600);
-	}
+    for(int i = 0; message[i] != '\0'; i++){
+        uart_bb_tx(PIN_TXD_RPI, (uint8_t)message[i], 9600);
+    }
 }
 
 /*void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
