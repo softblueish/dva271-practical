@@ -49,7 +49,15 @@ int main(){
 	while (1) {
 		uint32_t message = 0;
 		uart_bb_rx(PIN_RXD_RPI, &message, BAUD_RATE);
-		uart_bb_tx(PIN_TXD_RPI, message, BAUD_RATE);
+		print_string_GPIO("\n Byte recieved: ");
+		for (uint8_t i = 0; i < 8; i++)
+		{
+			if ((data >> i) & 0b00000001)
+				print_string_GPIO("1");
+			else
+				print_string_GPIO("0");
+		}
+		print_string_GPIO("\n");
 		nrfx_systick_delay_ms(1000);
 	}
 	return 0;
