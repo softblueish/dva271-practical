@@ -1,4 +1,5 @@
 #include "uarte-commands.h"
+#include "dwt.h"
 
 #define CLEAR_SCREEN "\033c"
 
@@ -244,7 +245,7 @@ void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
 	nrfx_systick_delay_us(bit_time_us);
 
 	__enable_irq();
-}
+}*/
 
 void print_string_GPIO(const char *message)
 {
