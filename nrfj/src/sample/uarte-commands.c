@@ -126,7 +126,7 @@ void print_string_GPIO(char* message){
 	}
 }
 
-void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
+/*void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
 {
 	unsigned long bit_time_us = 1000000UL / baudrate;
 	__disable_irq();
@@ -148,4 +148,4 @@ void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
 	*data = buffer;
 	nrfx_systick_delay_us(bit_time_us);
 	__enable_irq();
-}
+}*/
