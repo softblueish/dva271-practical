@@ -47,12 +47,12 @@ int main(){
 	nrf_gpio_cfg_input(37, NRF_GPIO_PIN_PULLUP);
 	nrfx_systick_delay_ms(10);
 	while (1) {
-		uint8_t message = 0;
-		uart_bb_rx(PIN_RXD_RPI, &message, BAUD_RATE);
+		uint8_t *message;
+		read_string(message, 1);
 		print_string_GPIO("\nByte recieved: ");
 		for (uint8_t i = 0; i < 8; i++)
 		{
-			if ((message >> i) & 0x01)
+			if ((*message >> i) & 0x01)
 				print_string_GPIO("1");
 			else
 				print_string_GPIO("0");
