@@ -155,8 +155,8 @@ void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
 
 	__disable_irq();
 
-	// Start bit (LOW)
-	while()
+	// Wait for the starting bit LOW
+	while(nrf_gpio_pin_read());
 	nrfx_systick_delay_us(bit_time_us);
 
 	// Data bits (LSB first)
