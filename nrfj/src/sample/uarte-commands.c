@@ -7,7 +7,7 @@
 #define CLEAR_SCREEN "\033c"
 
 nrfx_uarte_t saved_instance;
-volatile bool tx_done;				//volatile tx_done flag and rx_ready signal flag to set up interrupts
+volatile bool tx_done;				
 volatile bool rx_ready;
 volatile uint8_t rx_buffer;
 volatile unsigned long uart_error_count;
@@ -149,7 +149,7 @@ void uart_bb_tx(unsigned long pin, uint8_t data, unsigned long baudrate)
     __enable_irq();
 }
 
-void print_string_GPIO(char* message){
+void print_string_over_GPIO(char* message){
     for(int i = 0; message[i] != '\0'; i++){
         uart_bb_tx(PIN_TXD_RPI, (uint8_t)message[i], 9600);
     }
