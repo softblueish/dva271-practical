@@ -156,21 +156,17 @@ void uart_bb_rx(unsigned long pin, uint8_t* data, unsigned long baudrate)
 	__disable_irq();
 
 	// Wait for the starting bit LOW
-	while(nrf_gpio_pin_read());
+	while(nrf_gpio_pin_read(PIN_RXD_RPI));
 	nrfx_systick_delay_us(bit_time_us);
 
 	// Data bits (LSB first)
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		if ((data >> i) & 0x01)
-			nrf_gpio_pin_set(pin);
-		else
-			nrf_gpio_pin_clear(pin);
+		*data = *data >> i
+		*data = *data | nrfx_gpio_pin_read(PIN_RXD_RPI);
+		*data = *data << i
 		nrfx_systick_delay_us(bit_time_us);
 	}
-
-	// Stop bit (HIGH)
-	nrf_gpio_pin_set(pin);
 	nrfx_systick_delay_us(bit_time_us);
 
 	__enable_irq();
